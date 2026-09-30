@@ -1,0 +1,121 @@
+/* ============================================================
+   admin.css — MCU+ Admin Portal (Modern Clean Clinical B2B)
+   Strict alignment, uniform button heights, crisp borders.
+============================================================ */
+
+/* ── Custom Theme & Variables ──────────────────────────────── */
+:root {
+  --teal-clinical: #0B3D3A;
+  --teal-dark: #072B29;
+  --charcoal: #1A1A1A;
+  --border: #E2E8F0;
+}
+
+html {
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+body {
+  background-color: #FAFAF9;
+  color: #1A1A1A;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Status Badges (Clean Modern Clinical Pills) ────────────── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.725rem;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  transition: all 0.15s ease;
+}
+
+.badge-pending {
+  background-color: #FFFBEB;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.badge-confirmed {
+  background-color: #F1F5F9;
+  color: #1E293B;
+  border: 1px solid #CBD5E1;
+}
+
+.badge-scheduled {
+  background-color: #EFF6FF;
+  color: #1E40AF;
+  border: 1px solid #BFDBFE;
+}
+
+.badge-done {
+  background-color: #F0FDF4;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+/* ── Stat Cards ───────────────────────────────────────────── */
+.stat-card {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: #0B3D3A !important;
+  box-shadow: 0 8px 20px -4px rgba(11, 61, 58, 0.08);
+}
+
+.stat-card.active-filter {
+  border-color: #0B3D3A !important;
+  box-shadow: 0 0 0 2px #0B3D3A, 0 8px 20px -4px rgba(11, 61, 58, 0.12) !important;
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+.booking-row {
+  animation: row-in 0.15s ease-out forwards;
+}
+
+@keyframes row-in {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.booking-card {
+  animation: card-in 0.15s ease-out forwards;
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-enter {
+  animation: modal-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.97) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Custom Scrollbars ─────────────────────────────────────── */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 5px;
+}
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 99px;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}

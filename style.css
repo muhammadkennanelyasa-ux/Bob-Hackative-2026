@@ -1,0 +1,200 @@
+/* ============================================================
+   style.css — MCU+ (Modern Warm Clinical)
+   Warm sand tones, deep medical teal, editorial typography,
+   rich stacked imagery, and refined micro-interactions.
+============================================================ */
+
+/* ── Custom Theme & Variables ──────────────────────────────── */
+:root {
+  --warm-sand: #F6F4F0;
+  --teal-dark: #0B3D3A;
+  --teal-deep: #072B29;
+  --med-blue: #0B3D3A;
+  --med-blue-dark: #072B29;
+  --med-blue-light: #E6F4EA;
+  --med-green: #16A34A;
+  --med-green-dark: #15803D;
+  --charcoal: #1A1A1A;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+body {
+  background-color: #FFFFFF;
+  color: #1A1A1A;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Chat Window Transition & Mobile Layout ─────────────────── */
+#chat-window {
+  transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1), transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: bottom right;
+}
+
+/* Hidden state */
+.chat-window-hidden {
+  opacity: 0 !important;
+  transform: scale(0.96) translateY(8px) !important;
+  pointer-events: none !important;
+}
+
+/* Visible state */
+.chat-window-visible {
+  opacity: 1 !important;
+  transform: scale(1) translateY(0) !important;
+  pointer-events: auto !important;
+}
+
+/* Mobile full-width safe area for chat */
+@media (max-width: 640px) {
+  #chat-window {
+    width: calc(100vw - 2rem) !important;
+    right: 1rem !important;
+    bottom: 5.5rem !important;
+    max-height: calc(100vh - 7rem) !important;
+  }
+}
+
+/* ── Typing Indicator Dots ──────────────────────────────────── */
+.typing-dots .dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #0B3D3A;
+  animation: dot-bounce 1.2s infinite ease-in-out;
+}
+
+.typing-dots .dot:nth-child(1) { animation-delay: 0s; }
+.typing-dots .dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: translateY(0);   opacity: 0.4; }
+  40%           { transform: translateY(-4px); opacity: 1;   }
+}
+
+/* ── Chat Bubble Entrance Animation ────────────────────────── */
+.chat-bubble-enter {
+  animation: bubble-in 0.18s ease-out forwards;
+}
+
+@keyframes bubble-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+/* ── Quick Prompt Chips ─────────────────────────────────────── */
+.chip-btn {
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.chip-btn:hover {
+  background-color: #E6F4EA;
+  border-color: #0B3D3A;
+  color: #0B3D3A;
+}
+
+/* ── Package Card — Visual Depth & Selected State ──────────── */
+.package-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.package-card:hover {
+  transform: translateY(-3px);
+  border-color: #0B3D3A !important;
+  box-shadow: 0 12px 28px -4px rgba(11, 61, 58, 0.1);
+}
+
+.package-card.selected {
+  border-color: #0B3D3A !important;
+  box-shadow: 0 0 0 2px #0B3D3A, 0 12px 28px -4px rgba(11, 61, 58, 0.15) !important;
+}
+
+/* ── Custom Scrollbars ─────────────────────────────────────── */
+#chat-messages::-webkit-scrollbar,
+.custom-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+#chat-messages::-webkit-scrollbar-track,
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#chat-messages::-webkit-scrollbar-thumb,
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 99px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb:hover,
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* ── Modal Transitions ─────────────────────────────────────── */
+.modal-enter {
+  animation: modal-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modal-pop {
+  from { opacity: 0; transform: scale(0.97) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Summary dynamic row animation ─────────────────────────── */
+.summary-row-enter {
+  animation: row-fade 0.2s ease forwards;
+}
+
+@keyframes row-fade {
+  from { opacity: 0; transform: translateX(-3px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+/* ── Print Styles for B2B Quotation/Summary ─────────────────── */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  header, footer, #chat-toggle, #chat-window, #how-it-works, #order-status, .no-print, button {
+    display: none !important;
+  }
+  #booking-summary {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+
+/* ── Infinite Slow Marquee Carousel for Enterprise Logos ───── */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+}
+
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}

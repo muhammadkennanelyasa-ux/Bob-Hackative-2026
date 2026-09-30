@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCU+ — Admin Portal Operasional Bus MCU</title>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'teal-clinical': '#0B3D3A',
+            'teal-dark':     '#072B29',
+            'navy':          { DEFAULT: '#0B3D3A', dark: '#072B29', light: '#F6F4F0' },
+            'med-blue':      { DEFAULT: '#0B3D3A', light: '#F6F4F0', dark: '#072B29' },
+            'med-green':     { DEFAULT: '#16A34A', light: '#F0FDF4', dark: '#15803D' },
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            display: ['"Sora"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="bg-[#FAFAF9] text-slate-900 font-sans antialiased min-h-screen">
+
+  <!-- ── TOPBAR (Modern Clinical, Pure White, Crisp Border) ──── -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="admin.html" class="group focus:outline-none">
+          <div class="flex items-baseline gap-2">
+            <span class="font-display font-extrabold text-xl text-slate-950 tracking-tight group-hover:text-[#0B3D3A] transition-colors">MCU+</span>
+            <span class="text-[10px] font-mono font-semibold text-slate-500 uppercase tracking-wider bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">ADMIN PORTAL</span>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-tight">Manajemen Reservasi & Alokasi Bus MCU</p>
+        </a>
+      </div>
+      <div class="flex items-center gap-3">
+        <div id="navbar-auth-section"></div>
+        <button id="admin-topbar-logout" type="button" class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-600 hover:text-white bg-red-50 hover:bg-red-600 px-3.5 py-1.5 rounded-lg border border-red-200 hover:border-red-600 transition shadow-2xs cursor-pointer">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Keluar (Logout)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTENT ───────────────────────────────────────── -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Page Header & Action Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4 pb-6 border-b border-slate-200/80">
+      <div>
+        <span class="text-[11px] font-mono font-semibold text-slate-500 uppercase tracking-widest block mb-1">DASHBOARD // OPERASIONAL</span>
+        <h1 class="text-2xl sm:text-3xl font-display font-extrabold text-slate-950 tracking-tight">Daftar Pengajuan Kunjungan</h1>
+        <p class="text-slate-500 text-xs sm:text-sm mt-1">Kelola, verifikasi, dan sinkronisasi status reservasi Bus MCU klien B2B secara real-time.</p>
+      </div>
+
+      <!-- Quick Action Seeder & Export (Uniform Heights) -->
+      <div class="flex items-center gap-2.5">
+        <button id="btn-seed-data" class="inline-flex items-center gap-2 text-xs font-semibold bg-white text-slate-700 hover:text-slate-950 hover:bg-slate-50 h-9 px-3.5 rounded-lg transition border border-slate-200 shadow-2xs">
+          <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Muat Data Demo</span>
+        </button>
+        <button id="btn-export-csv" class="inline-flex items-center gap-2 text-xs font-semibold bg-[#0B3D3A] text-white hover:bg-[#072B29] h-9 px-3.5 rounded-lg transition shadow-2xs">
+          <svg class="w-3.5 h-3.5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Ekspor CSV</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STAT CARDS (Strict Geometric Metric Grid) ─────────── -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      
+      <div class="stat-card bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-2xs cursor-pointer" data-filter="">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[11px] font-mono font-medium text-slate-500 uppercase tracking-wider">Total Pengajuan</span>
+          <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+        </div>
+        <p id="stat-total" class="text-2xl sm:text-3xl font-display font-extrabold text-slate-950 tracking-tight">0</p>
+        <p class="text-xs text-slate-400 mt-1">Semua reservasi masuk</p>
+      </div>
+
+      <div class="stat-card bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-2xs cursor-pointer" data-filter="Menunggu Konfirmasi">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[11px] font-mono font-medium text-amber-700 uppercase tracking-wider">Menunggu Konfirmasi</span>
+          <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+        </div>
+        <p id="stat-pending" class="text-2xl sm:text-3xl font-display font-extrabold text-amber-600 tracking-tight">0</p>
+        <p class="text-xs text-slate-400 mt-1">Perlu verifikasi jadwal</p>
+      </div>
+
+      <div class="stat-card bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-2xs cursor-pointer" data-filter="Dikonfirmasi">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[11px] font-mono font-medium text-slate-700 uppercase tracking-wider">Dikonfirmasi</span>
+          <span class="w-2 h-2 rounded-full bg-[#0B3D3A]"></span>
+        </div>
+        <p id="stat-confirmed" class="text-2xl sm:text-3xl font-display font-extrabold text-slate-900 tracking-tight">0</p>
+        <p class="text-xs text-slate-400 mt-1">Armada & nakes siap</p>
+      </div>
+
+      <div class="stat-card bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-2xs cursor-pointer" data-filter="Selesai">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[11px] font-mono font-medium text-emerald-700 uppercase tracking-wider">MCU Selesai</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        </div>
+        <p id="stat-done" class="text-2xl sm:text-3xl font-display font-extrabold text-emerald-600 tracking-tight">0</p>
+        <p class="text-xs text-slate-400 mt-1">Laporan terkirim ke HR</p>
+      </div>
+
+    </div>
+
+    <!-- ── TOOLBAR: SEARCH & FILTER (Strict Heights & Alignment) ─ -->
+    <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-2xs mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      
+      <!-- Search Box -->
+      <div class="relative w-full sm:flex-1">
+        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" id="input-search" placeholder="Cari perusahaan, PIC, no. HP, lokasi, paket, atau ID…" class="w-full h-9 text-xs sm:text-sm pl-9 pr-3 rounded-lg border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#0B3D3A] focus:border-[#0B3D3A]" />
+      </div>
+
+      <!-- Filter & Actions Row -->
+      <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+        <div class="relative flex-1 sm:flex-none">
+          <select id="filter-status" class="w-full sm:w-auto h-9 text-xs sm:text-sm border border-slate-200 rounded-lg pl-3 pr-8 bg-white text-slate-700 font-medium focus:outline-none focus:ring-1 focus:ring-[#0B3D3A] focus:border-[#0B3D3A] appearance-none cursor-pointer shadow-2xs">
+            <option value="">Semua Status</option>
+            <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
+            <option value="Dikonfirmasi">Dikonfirmasi</option>
+            <option value="Jadwal Diproses">Jadwal Diproses</option>
+            <option value="Selesai">Selesai</option>
+          </select>
+          <svg class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <button id="btn-refresh" class="inline-flex items-center gap-1.5 h-9 text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:text-slate-950 hover:bg-slate-50 px-3 rounded-lg transition shadow-2xs">
+          <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Refresh</span>
+        </button>
+
+        <button id="btn-clear-all" class="inline-flex items-center gap-1 h-9 text-xs text-slate-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200 px-2.5 rounded-lg transition font-medium" title="Hapus semua data pengajuan">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="hidden sm:inline">Hapus Semua</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ── TABLE CONTAINER (Desktop) ───────────────────────── -->
+    <div id="table-container" class="hidden lg:block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50/90 border-b border-slate-200 text-slate-500 font-mono uppercase tracking-wider text-[10px]">
+              <th class="px-5 py-3.5 font-semibold">Perusahaan & Kontak PIC</th>
+              <th class="px-4 py-3.5 font-semibold">Paket MCU</th>
+              <th class="px-4 py-3.5 font-semibold text-center whitespace-nowrap">Peserta</th>
+              <th class="px-4 py-3.5 font-semibold whitespace-nowrap">Estimasi Biaya</th>
+              <th class="px-4 py-3.5 font-semibold">Tanggal & Lokasi</th>
+              <th class="px-4 py-3.5 font-semibold whitespace-nowrap">Status</th>
+              <th class="px-5 py-3.5 font-semibold text-right whitespace-nowrap min-w-[210px]">Aksi Operasional</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-table-body" class="divide-y divide-slate-100">
+            <!-- Injected by admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── CARDS CONTAINER (Mobile & Tablet) ───────────────── -->
+    <div id="bookings-card-list" class="lg:hidden space-y-3.5">
+      <!-- Injected by admin.js -->
+    </div>
+
+    <!-- ── EMPTY STATE ─────────────────────────────────────── -->
+    <div id="empty-state" class="hidden text-center py-16 bg-white rounded-xl border border-slate-200 p-8 shadow-2xs">
+      <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center mx-auto mb-3 text-slate-400">
+        <svg class="w-6 h-6 opacity-50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+      </div>
+      <p class="font-bold text-slate-800 text-sm">Belum ada data pengajuan</p>
+      <p class="text-xs text-slate-400 mt-0.5 max-w-sm mx-auto">Pengajuan baru dari form website klien akan langsung muncul di sini.</p>
+      <div class="mt-4 flex items-center justify-center gap-2.5">
+        <button id="btn-seed-data-empty" class="text-xs bg-[#0B3D3A] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#072B29] transition shadow-2xs">
+          Muat Data Demo
+        </button>
+        <a href="index.html" class="text-xs bg-white border border-slate-200 text-slate-700 font-medium px-4 py-2 rounded-lg hover:bg-slate-50 transition shadow-2xs">
+          Buka Website User
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── MODAL: STATUS CHANGER ──────────────────────────────── -->
+  <div id="modal-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 modal-enter border border-slate-200 max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true">
+      
+      <div class="flex items-start justify-between mb-4 pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="text-base font-bold text-slate-950">Ubah Status Pemesanan</h3>
+          <p id="modal-company" class="text-[11px] text-slate-400 font-mono mt-0.5"></p>
+        </div>
+        <button id="modal-close" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Detail Card Inside Modal -->
+      <div id="modal-detail" class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 mb-5 space-y-1.5 text-xs text-slate-700"></div>
+
+      <!-- Status Selection Buttons -->
+      <div class="mb-5">
+        <label class="block text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">PILIH STATUS BARU</label>
+        <div id="modal-status-options" class="grid grid-cols-2 gap-2">
+          <!-- Injected by admin.js -->
+        </div>
+      </div>
+
+      <div class="flex gap-2.5">
+        <button id="modal-save" class="flex-1 bg-[#0B3D3A] text-white font-semibold text-xs sm:text-sm py-2.5 rounded-lg hover:bg-[#072B29] transition shadow-xs">
+          Simpan Status
+        </button>
+        <button id="modal-cancel" class="bg-slate-100 text-slate-700 font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-lg hover:bg-slate-200 transition">
+          Batal
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (Universal Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+
+  <!-- Local config (API keys & Firebase config) -->
+  <script src="config.js"></script>
+
+  <!-- Firebase Integration Service -->
+  <script src="firebase-service.js"></script>
+
+  <script src="auth.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

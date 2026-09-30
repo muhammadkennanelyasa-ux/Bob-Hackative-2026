@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masuk & Daftar Akun — MCU+ Mobile MCU B2B</title>
+  <meta name="description" content="Portal autentikasi klien B2B dan admin MCU+. Masuk dengan Google atau daftar akun perusahaan baru." />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'warm-sand':     '#F6F4F0',
+            'teal-clinical': '#0B3D3A',
+            'teal-dark':     '#072B29',
+            'sage-soft':     '#C5D9C8',
+            'terracotta':    '#E07A5F',
+            'navy':          { DEFAULT: '#0B3D3A', dark: '#072B29', light: '#F6F4F0' },
+            'med-blue':      { DEFAULT: '#0B3D3A', light: '#F6F4F0', dark: '#072B29' },
+            'med-green':     { DEFAULT: '#16A34A', light: '#F0FDF4', dark: '#15803D' },
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            display: ['"Sora"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['"Newsreader"', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* Smooth transitions */
+    .tab-active {
+      background-color: #0B3D3A !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 2px 8px -1px rgba(11, 61, 58, 0.25);
+    }
+    .auth-card-enter {
+      animation: auth-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes auth-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-[#F6F4F0] text-slate-900 font-sans antialiased min-h-screen flex flex-col justify-between relative selection:bg-[#0B3D3A] selection:text-white">
+
+  <!-- Soft Organic Background Blobs -->
+  <div class="fixed top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-[#C5D9C8]/40 blur-[130px] pointer-events-none -z-0"></div>
+  <div class="fixed bottom-[-10%] left-[-5%] w-[450px] h-[450px] rounded-full bg-[#E8DCC8]/50 blur-[110px] pointer-events-none -z-0"></div>
+
+  <!-- ── SIMPLE NAVBAR ────────────────────────────────────────── -->
+  <header class="bg-white/85 backdrop-blur-md border-b border-stone-200/80 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      <!-- Brand -->
+      <a href="index.html" class="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#0B3D3A]/20 rounded-lg py-1 px-1 -ml-1">
+        <span class="font-display font-extrabold text-xl tracking-tight text-stone-900">MCU+</span>
+        <span class="text-[10px] font-mono font-medium text-stone-400 uppercase tracking-widest hidden sm:inline">PORTAL</span>
+      </a>
+
+      <!-- Back Link -->
+      <a href="index.html" class="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-600 hover:text-[#0B3D3A] transition-colors py-1 px-2.5 rounded-lg hover:bg-stone-100">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Kembali ke Beranda</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ── MAIN AUTH CONTENT ────────────────────────────────────── -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex items-center justify-center relative z-10">
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      
+      <!-- ── LEFT COLUMN: BRAND SHOWCASE (5 Cols Desktop) ──────── -->
+      <div class="hidden lg:flex lg:col-span-5 bg-[#0B3D3A] text-white rounded-3xl p-8 sm:p-10 flex-col justify-between shadow-xl relative overflow-hidden group">
+        <!-- Ambient Real Bus Photo Background with Dark Teal Gradient Blend -->
+        <img 
+          src="asset/Teal_and_white_medical_bus_2K_20260926143641.jpg" 
+          alt="Armada Bus Mobile MCU" 
+          class="absolute inset-0 w-full h-full object-cover opacity-25 mix-blend-luminosity transform scale-105 group-hover:scale-100 transition-transform duration-700 pointer-events-none"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0B3D3A] via-[#0B3D3A]/85 to-[#0B3D3A]/60 pointer-events-none"></div>
+
+        <!-- Background Overlay Pattern -->
+        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none"></div>
+        <div class="absolute -left-16 -bottom-16 w-64 h-64 rounded-full bg-[#E07A5F]/15 blur-2xl pointer-events-none"></div>
+
+        <div>
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-xs font-medium text-emerald-300 w-fit mb-6">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Portal Mobile MCU B2B</span>
+          </div>
+
+          <h2 class="text-2xl sm:text-3xl font-display font-extrabold tracking-tight leading-tight mb-4">
+            Kelola Layanan MCU Karyawan dalam Satu Dashboard.
+          </h2>
+          <p class="text-emerald-100/80 text-sm leading-relaxed mb-8">
+            Akses penjadwalan armada Bus MCU, rekapitulasi medis karyawan H+1, dan sertifikat kelaikan kerja secara langsung.
+          </p>
+
+          <!-- Benefits List -->
+          <div class="space-y-4 text-xs font-medium text-white/90">
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-md bg-white/10 flex items-center justify-center text-emerald-300 shrink-0 mt-0.5">
+                ✓
+              </div>
+              <div>
+                <strong class="text-white block font-semibold">Integrasi PACS & Hasil Digital H+1</strong>
+                <span class="text-emerald-100/70 text-[11px]">Rontgen DICOM & hasil lab terhubung langsung ke HR.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-md bg-white/10 flex items-center justify-center text-emerald-300 shrink-0 mt-0.5">
+                ✓
+              </div>
+              <div>
+                <strong class="text-white block font-semibold">Live Tracking Armada Bus</strong>
+                <span class="text-emerald-100/70 text-[11px]">Status real-time nakes, radiografer, dan silent genset.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-md bg-white/10 flex items-center justify-center text-emerald-300 shrink-0 mt-0.5">
+                ✓
+              </div>
+              <div>
+                <strong class="text-white block font-semibold">Kepatuhan K3 & Standar Kemenkes</strong>
+                <span class="text-emerald-100/70 text-[11px]">Memenuhi regulasi Permenaker No. 02/MEN/1980.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Client Testimonial Footer -->
+        <div class="pt-8 border-t border-white/15 mt-8">
+          <p class="text-xs italic text-emerald-100/80 leading-relaxed mb-3">
+            "Pelaksanaan MCU 500 karyawan pabrik kami selesai tepat waktu tanpa menghentikan jalur perakitan."
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-white text-[#0B3D3A] font-bold text-xs flex items-center justify-center">
+              SP
+            </div>
+            <div>
+              <p class="text-xs font-bold text-white leading-tight">Sarah Pratiwi</p>
+              <p class="text-[10px] text-emerald-200/70">HR Director • PT Astra Auto Parts</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RIGHT COLUMN: AUTH CARD (7 Cols Desktop) ─────────── -->
+      <div class="lg:col-span-7 flex flex-col justify-center">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl auth-card-enter">
+          
+          <!-- Auth Mode Tab Switcher -->
+          <div class="flex items-center p-1 bg-stone-100 rounded-xl mb-6">
+            <button id="tab-btn-login" class="flex-1 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all tab-active">
+              Masuk
+            </button>
+            <button id="tab-btn-register" class="flex-1 py-2 text-xs sm:text-sm font-semibold rounded-lg text-stone-600 hover:text-stone-950 transition-all">
+              Daftar Akun Baru
+            </button>
+          </div>
+
+          <!-- Section Title -->
+          <div class="mb-6">
+            <h1 id="auth-title" class="text-xl sm:text-2xl font-display font-extrabold text-stone-950 tracking-tight">
+              Selamat Datang Kembali
+            </h1>
+            <p id="auth-subtitle" class="text-xs sm:text-sm text-stone-500 mt-1">
+              Masuk ke akun perusahaan Anda untuk mengelola jadwal kunjungan bus MCU.
+            </p>
+          </div>
+
+          <!-- ── 1. GOOGLE ONE-CLICK AUTH BUTTON ──────────────── -->
+          <button id="btn-google-auth" class="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-stone-300 bg-white hover:bg-stone-50 text-stone-800 text-xs sm:text-sm font-semibold transition shadow-2xs hover:shadow-xs group mb-5">
+            <!-- Official Google 'G' SVG Logo -->
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.35 24 12 24z"/>
+              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+            </svg>
+            <span id="google-btn-text">Lanjutkan dengan Google</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="relative flex items-center justify-center mb-5">
+            <div class="border-t border-stone-200 w-full"></div>
+            <span class="bg-white px-3 text-[11px] font-mono uppercase text-stone-400">atau manual</span>
+            <div class="border-t border-stone-200 w-full"></div>
+          </div>
+
+          <!-- ── 2. LOGIN FORM (Default Visible) ──────────────── -->
+          <form id="form-login" class="space-y-4">
+            <div>
+              <label for="login-email" class="block text-xs font-semibold text-stone-700 mb-1.5">Email Perusahaan / Akun</label>
+              <input 
+                type="email" 
+                id="login-email" 
+                required 
+                placeholder="nama@perusahaan.co.id" 
+                class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#0B3D3A]/20 focus:border-[#0B3D3A] transition"
+              />
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="login-password" class="block text-xs font-semibold text-stone-700">Kata Sandi</label>
+                <button type="button" id="btn-forgot-password" class="text-[11px] font-medium text-[#0B3D3A] hover:underline">
+                  Lupa kata sandi?
+                </button>
+              </div>
+              <div class="relative">
+                <input 
+                  type="password" 
+                  id="login-password" 
+                  required 
+                  placeholder="••••••••" 
+                  class="w-full text-xs sm:text-sm pl-3.5 pr-10 py-2.5 rounded-xl border border-stone-300 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#0B3D3A]/20 focus:border-[#0B3D3A] transition"
+                />
+                <button type="button" class="toggle-password-btn absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 focus:outline-none" data-target="login-password">
+                  <svg class="w-4 h-4 eye-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-stone-600">
+                <input type="checkbox" id="login-remember" class="w-3.5 h-3.5 rounded text-[#0B3D3A] focus:ring-[#0B3D3A] border-stone-300" checked />
+                <span>Ingat saya di perangkat ini</span>
+              </label>
+            </div>
+
+            <button type="submit" id="login-submit-btn" class="w-full py-3 px-4 rounded-xl bg-[#0B3D3A] text-white text-xs sm:text-sm font-semibold hover:bg-[#072B29] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 mt-2">
+              <span>Masuk ke Akun Portal</span>
+              <span>→</span>
+            </button>
+          </form>
+
+          <!-- ── 3. REGISTER FORM (Manual Sign Up, Hidden initially) ─ -->
+          <form id="form-register" class="space-y-3.5 hidden">
+            <div>
+              <label for="reg-company" class="block text-xs font-semibold text-stone-700 mb-1">Nama Perusahaan / Instansi *</label>
+              <input 
+                type="text" 
+                id="reg-company" 
+                required 
+                placeholder="PT Solusi Industri Nusantara" 
+                class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#0B3D3A]/20 focus:border-[#0B3D3A] transition"
+              />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="reg-name" class="block text-xs font-semibold text-stone-700 mb-1">Nama Lengkap PIC *</label>
+                <input 
+                  type="text" 
+                  id="reg-name" 
+                  required 
+                  placeholder="Bapak / Ibu PIC HR" 
+                  class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#0B3D3A]/20 focus:border-[#0B3D3A] transition"
+                />
+              </div>
+              <div>
+                <label for="reg-phone" class="block text-xs font-semibold text-stone-700 mb-1">No. WhatsApp / HP *</label>
+                <input 
+                  type="tel" 
+                  id="reg-phone" 
+                  required 
+                  placeholder="081234567890" 
+                  class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#0B3D3A]/20 focus:border-[#0B3D3A] transition"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="reg-email" class="block text-xs font-semibold text-stone-700 mb-1">Email Perusahaan Resmi *</label>
+              <input 
+                type="email" 
+                id="reg-email" 
+                required 
+                placeholder="pic.hr@perusahaan.co.id" 
+                class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#0B3D3A]/20 focus:border-[#0B3D3A] transition"
+              />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="reg-password" class="block text-xs font-semibold text-stone-700 mb-1">Kata Sandi *</label>
+                <div class="relative">
+                  <input 
+                    type="password" 
+                    id="reg-password" 
+                    required 
+                    minlength="6"
+                    placeholder="Min. 6 karakter" 
+                    class="w-full text-xs sm:text-sm pl-3.5 pr-9 py-2.5 rounded-xl border border-stone-300 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#0B3D3A]/20 focus:border-[#0B3D3A] transition"
+                  />
+                  <button type="button" class="toggle-password-btn absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 focus:outline-none" data-target="reg-password">
+                    <svg class="w-4 h-4 eye-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label for="reg-confirm-password" class="block text-xs font-semibold text-stone-700 mb-1">Konfirmasi Sandi *</label>
+                <div class="relative">
+                  <input 
+                    type="password" 
+                    id="reg-confirm-password" 
+                    required 
+                    minlength="6"
+                    placeholder="Ulangi kata sandi" 
+                    class="w-full text-xs sm:text-sm pl-3.5 pr-9 py-2.5 rounded-xl border border-stone-300 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#0B3D3A]/20 focus:border-[#0B3D3A] transition"
+                  />
+                  <button type="button" class="toggle-password-btn absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 focus:outline-none" data-target="reg-confirm-password">
+                    <svg class="w-4 h-4 eye-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-1">
+              <label class="flex items-start gap-2 cursor-pointer text-[11px] text-stone-600">
+                <input type="checkbox" id="reg-terms" required class="w-3.5 h-3.5 rounded text-[#0B3D3A] focus:ring-[#0B3D3A] border-stone-300 mt-0.5" checked />
+                <span>Saya menyetujui Ketentuan Layanan & Kebijakan Privasi Rekam Medis Karyawan MCU+.</span>
+              </label>
+            </div>
+
+            <button type="submit" id="reg-submit-btn" class="w-full py-3 px-4 rounded-xl bg-[#0B3D3A] text-white text-xs sm:text-sm font-semibold hover:bg-[#072B29] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 mt-2">
+              <span>Daftar Akun Perusahaan</span>
+              <span>→</span>
+            </button>
+          </form>
+
+          <!-- ── 4. QUICK DEMO ACCOUNTS ───────────────────────── -->
+          <div class="mt-6 pt-5 border-t border-stone-200">
+            <p class="text-[10px] font-mono font-bold text-stone-400 uppercase tracking-wider mb-2.5">
+              ⚡ AKUN DEMO INSTAN (KLIK UNTUK MASUK)
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <button type="button" class="demo-login-btn text-left p-2.5 rounded-xl border border-stone-200 hover:border-[#0B3D3A]/40 bg-stone-50/70 hover:bg-white transition-all group" data-email="sarah@astra.co.id" data-role="klien">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-stone-900 group-hover:text-[#0B3D3A]">👔 Klien HR (Astra)</span>
+                  <span class="text-[10px] font-mono text-stone-400 group-hover:text-stone-600">Auto-Fill →</span>
+                </div>
+                <p class="text-[10px] text-stone-500 truncate mt-0.5">sarah@astra.co.id</p>
+              </button>
+
+              <button type="button" class="demo-login-btn text-left p-2.5 rounded-xl border border-stone-200 hover:border-[#0B3D3A]/40 bg-stone-50/70 hover:bg-white transition-all group" data-email="admin@mricare.id" data-role="admin">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-stone-900 group-hover:text-[#0B3D3A]">🩺 Admin MCU+</span>
+                  <span class="text-[10px] font-mono text-stone-400 group-hover:text-stone-600">Auto-Fill →</span>
+                </div>
+                <p class="text-[10px] text-stone-500 truncate mt-0.5">admin@mricare.id</p>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── GOOGLE AUTH MODAL ──────────────────────────── -->
+  <div id="google-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 modal-enter border border-stone-200 max-h-[90vh] overflow-y-auto">
+      
+      <!-- Google Brand Header -->
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-stone-100">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.35 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span class="font-bold text-sm text-stone-800">Masuk Akun Google • MCU+</span>
+        </div>
+        <button id="google-modal-close" class="text-stone-400 hover:text-stone-600 p-1 rounded-lg">
+          ✕
+        </button>
+      </div>
+
+      <!-- Protocol / Environment Context Notice -->
+      <div id="google-protocol-notice" class="mb-4 text-[11px] p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 hidden">
+        <p class="font-semibold flex items-center gap-1.5">
+          <span>💡</span> <span>Info Mode Lokal (file://)</span>
+        </p>
+        <p class="mt-0.5 text-[10.5px] leading-relaxed text-amber-700">
+          Firebase Live Google Popup membutuhkan web server (<code class="bg-amber-100 px-1 py-0.5 rounded font-mono">http://localhost</code>). Di mode ini Anda bisa langsung ketik email Google Anda di bawah atau pilih profil demo instan!
+        </p>
+      </div>
+
+      <!-- Live Firebase Google Sign-In Button -->
+      <button id="btn-firebase-google-popup" class="w-full flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-[#0B3D3A] bg-[#0B3D3A]/5 hover:bg-[#0B3D3A]/10 text-[#0B3D3A] transition text-center font-bold text-xs shadow-2xs mb-4">
+        <svg class="w-4 h-4" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        <span>Buka Popup Login Google Resmi (Firebase Live)</span>
+      </button>
+
+      <!-- Custom Google Account Form -->
+      <form id="form-custom-google" class="p-3 bg-stone-50 rounded-xl border border-stone-200 mb-4 space-y-2.5">
+        <p class="text-[11px] font-bold text-stone-700">Masuk dengan Email Google Pribadi / Perusahaan:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <input type="text" id="google-custom-name" required placeholder="Nama Lengkap PIC" class="text-xs px-3 py-2 rounded-lg border border-stone-300 bg-white text-stone-800 placeholder-stone-400 focus:outline-none focus:border-[#0B3D3A]" />
+          <input type="email" id="google-custom-email" required placeholder="nama@gmail.com" class="text-xs px-3 py-2 rounded-lg border border-stone-300 bg-white text-stone-800 placeholder-stone-400 focus:outline-none focus:border-[#0B3D3A]" />
+        </div>
+        <button type="submit" class="w-full py-2.5 px-3 rounded-lg bg-[#0B3D3A] text-white text-xs font-semibold hover:bg-[#072B29] transition flex items-center justify-center gap-1.5 shadow-2xs">
+          <span>Masuk Sebagai Akun Google Ini</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <div class="flex items-center gap-2 my-3 text-[10px] font-mono text-stone-400 uppercase tracking-wider">
+        <div class="flex-1 border-t border-stone-200"></div>
+        <span>Atau Pilih Akun Demo Instan</span>
+        <div class="flex-1 border-t border-stone-200"></div>
+      </div>
+
+      <!-- Account List -->
+      <div class="space-y-2 mb-4">
+        <button class="google-choose-account w-full flex items-center gap-3 p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50 transition text-left" data-name="Sarah Pratiwi" data-email="sarah.pratiwi@gmail.com" data-company="PT Astra Auto Parts Tbk" data-avatar="SP">
+          <div class="w-9 h-9 rounded-full bg-emerald-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
+            SP
+          </div>
+          <div class="truncate">
+            <p class="text-xs font-bold text-stone-900 leading-tight">Sarah Pratiwi</p>
+            <p class="text-[11px] text-stone-500 truncate">sarah.pratiwi@gmail.com • HR PT Astra</p>
+          </div>
+        </button>
+
+        <button class="google-choose-account w-full flex items-center gap-3 p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50 transition text-left" data-name="Hendra Wijaya" data-email="hendra.wijaya.corp@gmail.com" data-company="PT Indofood CBP Sukses Makmur" data-avatar="HW">
+          <div class="w-9 h-9 rounded-full bg-blue-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
+            HW
+          </div>
+          <div class="truncate">
+            <p class="text-xs font-bold text-stone-900 leading-tight">Hendra Wijaya</p>
+            <p class="text-[11px] text-stone-500 truncate">hendra.wijaya.corp@gmail.com • HR PT Indofood</p>
+          </div>
+        </button>
+
+        <button class="google-choose-account w-full flex items-center gap-3 p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50 transition text-left" data-name="Dr. Hendra Wijaya" data-email="admin@mricare.id" data-company="MCU+ Operations" data-avatar="MC">
+          <div class="w-9 h-9 rounded-full bg-[#0B3D3A] text-white font-bold text-xs flex items-center justify-center shrink-0">
+            MC
+          </div>
+          <div class="truncate">
+            <p class="text-xs font-bold text-stone-900 leading-tight">Admin Operasional</p>
+            <p class="text-[11px] text-stone-500 truncate">admin@mricare.id • Portal Manajemen</p>
+          </div>
+        </button>
+      </div>
+
+      <p class="text-[10px] text-stone-400 text-center leading-tight">
+        Dengan melanjutkan, Google akan membagikan profil nama, email, dan foto dengan MCU+ Medical Service.
+      </p>
+
+    </div>
+  </div>
+
+  <!-- ── TOAST NOTIFICATION ───────────────────────────────────── -->
+  <div id="auth-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-stone-950 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-2xl opacity-0 transition-all duration-200 pointer-events-none border border-stone-800 flex items-center gap-2">
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 text-xs text-stone-400 border-t border-stone-200/60 bg-white/40">
+    © 2026 MCU+ — PT Medika Reservasi Indonesia. Standar Pelayanan Kemenkes & BAPETEN.
+  </footer>
+
+  <!-- Firebase SDKs (Universal Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+
+  <!-- Local config (API keys & Firebase config) -->
+  <script src="config.js"></script>
+
+  <!-- Firebase Integration Service -->
+  <script src="firebase-service.js"></script>
+
+  <!-- Auth Logic Script -->
+  <script src="auth.js"></script>
+</body>
+</html>
